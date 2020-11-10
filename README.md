@@ -1,4 +1,4 @@
-# <img src=imagen/clima-gif-5.gif width="500"> 
+# <div style="text-align:center"><img src=imagen/clima-gif-5.gif width="350"> 
 # El Clima
 
 ## Proyecto
@@ -73,9 +73,9 @@ Se pudo observar que al comparar el cambio de temperatura en un mes particular e
 Se constato que la temperatura no tiene una relacion directa con las precipitacion y de igual manera sucede con las precipitacion con respecto a la velocidad del tiempo.
 
 
-<img src=output/Grafico1.jpg width="450"> 
+<div style="text-align:left"><img src=output/Grafico1.jpg width="400"> 
 
 
 
-<img src=output/Grafico2.jpg width="450"> 
+<div style="text-align:right"><img src=output/Grafico2.jpg width="400"> 
 
