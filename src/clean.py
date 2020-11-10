@@ -1,9 +1,8 @@
 
 import pandas as pd
 import numpy as np
+#determino el indice en donde cambia la provincia
 def indice(x):
-    #esto lo paso como argumento x = df_weather['city_name']
-    # esto como argumento y= df_weather['city_name']
     y=x.unique()
     count=0
     c=1
@@ -17,7 +16,7 @@ def indice(x):
                 c=0
     return indi
 
-
+#divido el data set por provincias
 def div_in_set(x, y, provincia):
     if provincia == "valencia":
         df_weather_valencia = x[:y[0]].reset_index()
@@ -35,10 +34,12 @@ def div_in_set(x, y, provincia):
         df_weather_sevilla = x[y[3]:].reset_index()
         return pd.DataFrame(df_weather_sevilla)
 
+#elimino la informacion duplicada
 def delete_duplicate(data):
     df_weather_2=data.drop_duplicates(subset=['dt_iso'], keep='last')
     return pd.DataFrame(df_weather_2)
 
+#funcion que calcula la media, pasando asi la informacion de horas a meses
 def arreglo(data2):
     d=data2[['temp', 'temp_min', 'temp_max', 'pressure', 'humidity', 'wind_speed']]
     columns=list(d)
@@ -105,6 +106,7 @@ def arreglo(data2):
     g.columns = ['temp', 'temp_min', 'temp_max', 'pressure', 'humidity', 'wind_speed']
     return pd.DataFrame(g)
 
+# inserta dos columanas (año y mes)
 def insert_month_year(m):
     x=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']*4
     year=['2015']*12+['2016']*12+['2017']*12+['2018']*12
@@ -113,7 +115,7 @@ def insert_month_year(m):
     return pd.DataFrame(m)
 
 
-
+# inserta dos columnas (año y mes)
 def insert_month_year_2(m,ye):
     x=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']*4
     year=[ye[0]]*12+[ye[1]]*12+[ye[2]]*12+[ye[3]]*12
@@ -121,28 +123,34 @@ def insert_month_year_2(m,ye):
     m.insert(0,"Year",year,True)
     return pd.DataFrame(m)
 
+# redondeo valores a 2 decimales
 def redondear (m):
     return m.apply(lambda x: round(x,2))
 
+#transformacion de kelvin a celsius
 def temp_C (m):
     m[['temp', 'temp_min', 'temp_max']] = m[['temp', 'temp_min', 'temp_max']].apply(lambda x: x - 273)
     return m
 
+#seleccion de columnas deseadas
 def clean_json(data):
     x=data[['tmed','tmin','tmax', 'presMax', 'presMin', 'velmedia','prec']]
     return x
 
+# creacion de la coplumna presion media, y eliminacion de la presion maxima y minima
 def Pres_m(p):
     p['pres'] = (p['presMax'] + p['presMin']).apply(lambda x: x/2)
     p.drop(['presMax', 'presMin'], axis=1)
     return p[['tmed','tmin','tmax', 'pres', 'velmedia','prec']]
 
+# interpolacion de los datos NAN
 def inte_nan(p):
     columns=list(p)
     for i in columns:
         p[i] = p[i].interpolate() 
     return (p)
 
+# transformacion de de la data que estaba por dia llevarla a mes
 def day_a_Month (p,years2):
     columns = list(p)
     mes=['31', '28', '30', '31', '30', '31', '30', '31', '30', '31', '30', '31']
@@ -189,14 +197,16 @@ def day_a_Month (p,years2):
     g.columns=columns
     return g
 
+# inserta mes y año
 def insert_month_year_json(m):
     x=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     year=['2019']*12
     m.insert(0,"Month",x,True)
     m.insert(0,"Year",year,True)
     return pd.DataFrame(m)
-# 
 
+
+# Determina el indice donde cambia cada año en el dataset
 def indice_year(x):
 
     y=x.unique()
@@ -212,13 +222,15 @@ def indice_year(x):
                 c=0                
     return dict1
 
-
+#reemplaza la inforamcion del data de AEMET por la de Kaggle
 def replace(data_final_2018, m):
     titles = ['temp', 'temp_min', 'temp_max', 'pressure', 'humidity', 'wind_speed']
     for i in titles:
         data_final_2018[i]=m[i]
     return data_final_2018
 
+
+#creacion de lista de los primeros 4 años
 def fecha1():
     Inicio = 2000
     Fin = 2019
@@ -227,6 +239,7 @@ def fecha1():
         list1.append(i)
     return list1
 
+# creacion de lista de los años continuos (con un len de 4 cada lista)
 def fecha2 ():
     Inicio = 2000
     Fin = 2019

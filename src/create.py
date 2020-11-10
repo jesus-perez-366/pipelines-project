@@ -3,10 +3,10 @@ import re
 import src.clean as cn
 import src.json as jn
 import numpy as np
-import matplotlib.pyplot as plt
 import src.Grafico as gr
 
 
+#crea el data set de weather_Kaggle
 def creat_data_weather_kaggle(x):
     df_weather=pd.read_csv("input/weather_features.csv",encoding='cp1252')
     df_weather_CN = df_weather['city_name']
@@ -22,6 +22,7 @@ def creat_data_weather_kaggle(x):
     df_data_weather.to_csv('output/weather_kaggle.csv')
     return df_data_weather
 
+#crea el data set de weather_aemet inicial
 def creat_data_weather_aemet(x):
     year= cn.fecha1()
     inf_wather = jn.Gen_url(x,year)
@@ -41,6 +42,7 @@ def creat_data_weather_aemet(x):
     data_final_weather = inf_wather.reset_index(drop=True)
     return data_final_weather
 
+#crea el data set de weather_aemet completo
 def creat_data_weather_aemet2(x, y):
     years= cn.fecha2()
     for year in years:
@@ -64,7 +66,7 @@ def creat_data_weather_aemet2(x, y):
     y.to_csv('output/weather_aemet.csv')
     return y
 
-
+# unifica los 2 dataset
 def  union(x,y):
     dict1=cn.indice_year(x['Year'])
     data_final_2014 = x[:dict1[2015]].reset_index(drop=True)
